@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{ .Title }}</title>
+	<style>
+		body {
+			background-color: #333;
+			color: #fff;
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+		}
+		
+		h1 {
+			color: #ffffff;
+			font-size: 36px;
+			margin: 0;
+			padding: 10px;
+			text-align: center;
+		}
+
+		h2 {
+			color: #ffffff;
+			font-size: 24px;
+			margin: 0;
+			padding: 10px;
+			text-align: center;
+		}
+
+		.container {
+			display: flex;
+			flex-wrap: wrap;
+			margin: 20px;
+		}
+
+		.column {
+			background-color: #2c3e50;
+			border: 1px solid #000;
+			box-sizing: border-box;
+			width: calc(25% - 20px);
+			margin: 10px;
+			padding: 20px;
+			text-align: center;
+		}
+
+		.column a {
+			color: #cfbdbd;
+		}
+
+		.header {
+			background-color: #27ae60;
+			color: #fff;
+			font-size: 24px;
+			font-weight: bold;
+			margin-bottom: 10px;
+			padding: 10px;
+		}
+
+	  /* Style for the frames */
+      .myFrame {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 800px;
+        height: 400px;
+        background-color: #fff;
+		color: #515151;
+        border: 1px solid #000;
+        padding: 10px;
+        display: none;
+      }
+      /* Style for the close button */
+      .closeBtn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        cursor: pointer;
+      }
+
+	</style>
+</head>
+<body>
+	<header>
+		<h1>Croc Kilo </h1>
+		<h1>{{.Title}}</h1>
+	</header>
+	
+	<!-- Repeat the block 7 times -->
+	{{range .Day }}
+	<h1>{{ .Meal }}</h1>
+	<div class="container">
+		{{ range .Menu }}
+		<div class="column">
+			<div class="header"> {{ .Name }} </div>
+			{{ range .Plat }}
+			<p>
+			{{if  eq .Link ""}}	
+			{{ .Name }}</p>
+			{{else }}
+			<p><a href="#" onclick="openFrame('{{ .Link }}'); return false;">{{ .Name }}</a>
+			</p> 
+
+			<div class="myFrame">
+				<h2>{{ .Name }} </h2>
+				<!-- Close button to hide the frame -->
+				<span class="closeBtn" onclick="closeFrame(this.parentNode);">&times;</span>
+				<!-- Content of the frame loaded from the URL passed as a parameter -->
+				<iframe src="{{ .Link  }}" width="100%" height="100%"></iframe>
+			  </div>
+
+			{{end}}	
+
+			{{ end }}
+		</div>
+		{{ end }}
+	</div>
+	{{end}}
+
+	<script>
+		// Function to open a frame and load a URL into it
+		function openFrame(url) {
+		  // Get the frame corresponding to the specified URL
+		  var frame = document.querySelector('.myFrame iframe[src="' + url + '"]').parentNode;
+		  // Display the frame
+		  frame.style.display = 'block';
+		}
+		
+		// Function to close a frame
+		function closeFrame(frame) {
+		  // Hide the frame
+		  frame.style.display = 'none';
+		  // Set the source of the iframe to an empty URL to stop any loading content
+		  frame.querySelector('iframe').src = '';
+		}
+	  </script>
+
+</body>
+</html>
+
+

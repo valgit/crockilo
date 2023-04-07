@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{ .Title }}</title>
+	<style>
+		body {
+			background-color: #333;
+			color: #fff;
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+		}
+		
+		h1 {
+			color: #ffffff;
+			font-size: 36px;
+			margin: 0;
+			padding: 10px;
+			text-align: center;
+		}
+
+		h2 {
+			color: #ffffff;
+			font-size: 24px;
+			margin: 0;
+			padding: 10px;
+			text-align: center;
+		}
+
+		.container {
+			display: flex;
+			flex-wrap: wrap;
+			margin: 20px;
+		}
+
+		.column {
+			background-color: #2c3e50;
+			border: 1px solid #000;
+			box-sizing: border-box;
+			width: calc(50% - 20px);
+			margin: 10px;
+			padding: 20px;
+			text-align: center;
+		}
+
+		.column a {
+			color: #cfbdbd;
+		}
+
+		.header {
+			background-color: #27ae60;
+			color: #fff;
+			font-size: 24px;
+			font-weight: bold;
+			margin-bottom: 10px;
+			padding: 10px;
+		}
+
+		.row {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: center;
+			width: 100%;
+			padding:10px;
+		}
+		.list {
+			list-style-type: none;
+			text-align: left;
+			padding: 0;
+		}
+		.list li {
+			margin: 5px 0;
+		}
+
+	</style>
+</head>
+<body>
+	<header>
+		<h1>{{.Title}}</h1>
+	</header>
+
+	<div class="container">
+		
+		<div class="column">
+			<p><img src="{{ .Img }}" width=200></p>
+			
+			<p>Portion: {{ .Portion }} </p>
+			<p>Temps Cuisson: {{ .CookingTime }} </p>
+			<p>Kcal: {{ .Kcal }} </p>
+			<hr>
+			<p>Ingredients
+				<ul class="list">
+				{{ range .Ingredients }}
+					{{if  ne .Name ""}}	
+						{{if eq .Quantity 0 }}
+						<ul>{{ .Name }}</ul>
+						{{ else }}
+						<ul>{{ .Name }} : {{ .Quantity }} {{ .Unit}} </ul>
+						{{ end }}
+					{{ end }}
+				{{ end }}	
+				</ul>
+			</p>
+		</div>
+
+		<div class="column">
+			<p>{{ .Steps }} </p>
+			
+		</div>
+		
+	</div>
+	<button onclick="goBack()">Go Back</button>
+
+    <script>
+      function goBack() {
+        window.history.back();
+      }
+    </script>
+</body>
+</html>
+
+
