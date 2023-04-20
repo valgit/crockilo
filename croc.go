@@ -257,7 +257,7 @@ func main() {
 	}
 
 	/* compile recipe tmpl */
-	parsedTemplate, _ := template.ParseFiles("recipe.html")
+	parsedTemplate, _ := template.ParseFiles(cwd + "/recipe.html")
 
 	for i := 0; i < 7; i++ {
 		// Calculez la date du jour en utilisant la date courante et le numéro de jour
@@ -292,7 +292,13 @@ func main() {
 			for m, meals := range menu.MenuMeals {
 				//fmt.Fprintf(f, "<h1>%s</h1>\n", meals.Meal.Title)
 				pieces := strings.Split(meals.Meal.Title, " - ")
-				weekData.Day[i].Menu[m].Name = pieces[1]
+				if len(pieces) > 2 {
+					weekData.Day[i].Menu[m].Name = fmt.Sprintf("%s (%s)", pieces[1], pieces[2])
+					fmt.Printf("menu: %s - %s\n", pieces[1], pieces[2])
+				} else {
+					weekData.Day[i].Menu[m].Name = fmt.Sprintf("%s", pieces[1])
+					fmt.Printf("menu: %s \n", pieces[1])
+				}
 				//TODO: better
 				weekData.Day[i].Menu[m].Plat = make([]Recette, 5)
 
@@ -354,7 +360,8 @@ func main() {
 		}
 	}
 	// output HTML data
-	GenHTML(weekData, "layout.html", outputPath)
+
+	GenHTML(weekData, cwd+"/layout.html", outputPath)
 
 	// reindex recette
 	/*
