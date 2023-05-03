@@ -40,8 +40,8 @@ type Recipe struct {
 	Type     string      `json:"@type"`
 	ID0      int         `json:"id"`
 	Title    string      `json:"title"`
-	Calories string      `json:"calories"`
-	Kcal     string      `json:"kcal"`
+	Calories int         `json:"calories,omitempty"`
+	Kcal     int         `json:"kcal"`
 	Steps    string      `json:"steps"`
 	Note     interface{} `json:"note"`
 	Picture  Picture     `json:"picture"`
@@ -104,12 +104,12 @@ type MealRecipe struct {
 	Type              string              `json:"@type"`
 	ID0               int                 `json:"id"`
 	Title             string              `json:"title"`
-	Calories          int                 `json:"calories"`
+	Calories          int                 `json:"calories,omitempty"`
 	Kcal              int                 `json:"kcal"`
 	CreatedAt         time.Time           `json:"createdAt"`
 	UpdatedAt         time.Time           `json:"updatedAt"`
-	IsVegan           int                 `json:"isVegan"`
-	AtTop             int                 `json:"atTop"`
+	IsVegan           bool                `json:"isVegan"`
+	AtTop             bool                `json:"atTop"`
 	PreparationTime   int                 `json:"preparationTime"`
 	CookingTime       int                 `json:"cookingTime"`
 	Steps             string              `json:"steps"`
@@ -118,7 +118,7 @@ type MealRecipe struct {
 	Categories        []string            `json:"categories"`
 	Seasons           []string            `json:"seasons"`
 	RecipeIngredients []RecipeIngredients `json:"recipeIngredients"`
-	IsStabilization   int                 `json:"isStabilization"`
+	IsStabilization   bool                `json:"isStabilization"`
 	VideoURL          interface{}         `json:"videoUrl"`
 	Rating            float64             `json:"rating"`
 	RatingVolume      int                 `json:"ratingVolume"`
