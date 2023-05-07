@@ -171,7 +171,7 @@ func usage() {
 	flag.PrintDefaults()
 }
 
-func main() {
+func generateWeekMenu() {
 	cwd, err := GetWorkingDir() // os.Getwd()
 	if err != nil {
 		fmt.Println("Error getting current working directory:", err)
