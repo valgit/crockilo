@@ -33,12 +33,13 @@ func main() {
 	myWin := myApp.NewWindow("crockilo")
 
 	/*
-			 // Load the icon file
-		    iconResource := fyne.LoadResourceFromPath("path/to/icon.png")
-
-		    // Set the icon for the application
-		    myApp.SetIcon(iconResource)
-
+		// Load the icon file
+		iconResource, err := fyne.LoadResourceFromPath("croc.png")
+		if err != nil {
+			fmt.Printf("%s\n", err)
+		}
+		// Set the icon for the application
+		myApp.SetIcon(iconResource)
 	*/
 
 	dateEntry := widget.NewEntry()
@@ -58,15 +59,17 @@ func main() {
 		// Call your function here with the date parameter
 		// processDate(date)
 		fmt.Printf("%s\n", date)
-		generateWeekMenu()
+		menu := generateWeekMenu()
+		openURL(menu)
 	})
 
-	openButton := widget.NewButton("Open", func() {
-		//TODO: get current week &/or date
-		url := "file:///Users/val/Documents/crockilo/crocmenu/menu_2023_18.html"
-		openURL(url)
-	})
-
+	/*
+		openButton := widget.NewButton("Open", func() {
+			//TODO: get current week &/or date
+			url := "file:///Users/val/Documents/crockilo/crocmenu/menu_2023_18.html"
+			openURL(url)
+		})
+	*/
 	quitButton := widget.NewButton("Quit", func() {
 		myApp.Quit()
 	})
@@ -76,7 +79,7 @@ func main() {
 		//layout.NewSpacer(),
 		container.NewHBox(
 			startButton,
-			openButton,
+			//openButton,
 			//layout.NewSpacer(),
 			quitButton,
 		),

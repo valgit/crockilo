@@ -171,11 +171,11 @@ func usage() {
 	flag.PrintDefaults()
 }
 
-func generateWeekMenu() {
+func generateWeekMenu() string {
 	cwd, err := GetWorkingDir() // os.Getwd()
 	if err != nil {
 		fmt.Println("Error getting current working directory:", err)
-		return
+		return ""
 	}
 
 	fmt.Println("Current working directory:", cwd)
@@ -194,6 +194,7 @@ func generateWeekMenu() {
 	cfg, err := LoadConfig(*configFile)
 	if err != nil {
 		log.Printf("error loading config file: %v", err)
+		return ""
 	}
 
 	// Override config values with command-line flags
@@ -217,6 +218,7 @@ func generateWeekMenu() {
 	token, err := CheckAuth(cfg.Appconf.User, cfg.Appconf.Password)
 	if err != nil {
 		log.Fatal("login error")
+		return ""
 	}
 	fmt.Printf("JWT: %s\n", token.Token)
 	/**/
@@ -227,6 +229,7 @@ func generateWeekMenu() {
 	err = Checkdir(pathmenu)
 	if err != nil {
 		log.Fatal("can't create menu dir")
+		return ""
 	} else {
 		fmt.Printf("will store menu in %s\n", pathmenu)
 	}
@@ -235,6 +238,7 @@ func generateWeekMenu() {
 	err = Checkdir(pathrecipe)
 	if err != nil {
 		log.Fatal("can't create recipe dir")
+		return ""
 	} else {
 		fmt.Printf("will store recipe in %s\n", pathrecipe)
 	}
@@ -368,4 +372,5 @@ func generateWeekMenu() {
 		outputPath = fmt.Sprintf("%s/recettes.html", pathmenu)
 		IndexMenu(pathrecipe, outputPath)
 	*/
+	return outputPath
 }
