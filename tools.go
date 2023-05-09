@@ -39,11 +39,13 @@ func Checkdir(dir string) error {
 }
 
 // Check if file exists
-func IsFileExist(filename string) {
+func IsFileExist(filename string) bool {
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
-		fmt.Printf("File %s does not exist\n", filename)
+		//fmt.Printf("File %s does not exist\n", filename)
+		return false
 	} else {
-		fmt.Printf("File %s exists\n", filename)
+		return true
+		//fmt.Printf("File %s exists\n", filename)
 	}
 }
 

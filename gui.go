@@ -42,8 +42,11 @@ func main() {
 		myApp.SetIcon(iconResource)
 	*/
 
+	// Set the date to today's date
+	today := time.Now().Format("02/01/2006")
 	dateEntry := widget.NewEntry()
 	dateEntry.SetPlaceHolder("Enter a date (dd/mm/yyyy)")
+	dateEntry.SetText(today)
 
 	outputLabel := widget.NewLabel("Output will appear here")
 
@@ -60,7 +63,12 @@ func main() {
 		// processDate(date)
 		fmt.Printf("%s\n", date)
 		menu := generateWeekMenu()
-		openURL(menu)
+		err = openURL(menu)
+		if err != nil {
+			outputLabel.SetText(err.Error())
+			return
+		}
+		myApp.Quit()
 	})
 
 	/*

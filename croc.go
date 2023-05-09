@@ -261,7 +261,11 @@ func generateWeekMenu() string {
 	}
 
 	/* compile recipe tmpl */
-	parsedTemplate, _ := template.ParseFiles(cwd + "/recipe.html")
+	reciptmpl := pathmenu + "/recipe.html"
+	if !IsFileExist(reciptmpl) {
+		log.Fatal("template not found\n")
+	}
+	parsedTemplate, _ := template.ParseFiles(reciptmpl)
 
 	for i := 0; i < 7; i++ {
 		// Calculez la date du jour en utilisant la date courante et le numéro de jour
@@ -283,7 +287,8 @@ func generateWeekMenu() string {
 			"Sunday", "Dimanche",
 		)
 
-		weekday := fmt.Sprintf("%s", humanReadable.Weekday())
+		//weekday := fmt.Sprintf("%s", humanReadable.Weekday())
+		weekday := humanReadable.Weekday().String()
 		weekData.Day[i].Meal = r.Replace(weekday) // fmt.Sprintf("%s", weekday)
 		weekData.Day[i].Menu = make([]MenuData, 4)
 
@@ -364,8 +369,11 @@ func generateWeekMenu() string {
 		}
 	}
 	// output HTML data
-
-	GenHTML(weekData, cwd+"/layout.html", outputPath)
+	weektmpl := pathmenu + "/layout.html"
+	if !IsFileExist(weektmpl) {
+		log.Fatal("template not found\n")
+	}
+	GenHTML(weekData, weektmpl, outputPath)
 
 	// reindex recette
 	/*
