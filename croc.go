@@ -171,7 +171,7 @@ func usage() {
 	flag.PrintDefaults()
 }
 
-func generateWeekMenu() string {
+func generateWeekMenu(date time.Time) string {
 	cwd, err := GetWorkingDir() // os.Getwd()
 	if err != nil {
 		fmt.Println("Error getting current working directory:", err)
@@ -243,6 +243,7 @@ func generateWeekMenu() string {
 		fmt.Printf("will store recipe in %s\n", pathrecipe)
 	}
 
+	fmt.Printf("will get menu for %s\n", date)
 	// today
 	humanReadable := time.Now()
 	// Date de départ
@@ -253,6 +254,9 @@ func generateWeekMenu() string {
 	fmt.Printf("start : %s\n", startOfWeek)
 
 	year, week := humanReadable.ISOWeek()
+	//
+	_, w := date.ISOWeek()
+	fmt.Printf("%d %d\n", week, w)
 	outputPath := fmt.Sprintf("%s/menu_%d_%d.html", pathmenu, year, week)
 
 	weekData := WeekData{

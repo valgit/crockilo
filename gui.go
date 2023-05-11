@@ -62,7 +62,7 @@ func main() {
 		// Call your function here with the date parameter
 		// processDate(date)
 		fmt.Printf("%s\n", date)
-		menu := generateWeekMenu()
+		menu := generateWeekMenu(date)
 		err = openURL(menu)
 		if err != nil {
 			outputLabel.SetText(err.Error())
