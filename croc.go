@@ -266,6 +266,7 @@ func generateWeekMenu(date time.Time) string {
 
 	/* compile recipe tmpl */
 	reciptmpl := pathmenu + "/recipe.html"
+	fmt.Printf("template: %s\n", reciptmpl)
 	if !IsFileExist(reciptmpl) {
 		log.Fatal("template not found\n")
 	}
