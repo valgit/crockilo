@@ -243,10 +243,11 @@ func generateWeekMenu(date time.Time) string {
 		fmt.Printf("will store recipe in %s\n", pathrecipe)
 	}
 
+	// Date de départ
 	fmt.Printf("will get menu for %s\n", date)
 	// today
-	humanReadable := time.Now()
-	// Date de départ
+	//humanReadable := time.Now()
+	humanReadable := date
 	//date := time.Date(2023, time.April, 2, 0, 0, 0, 0, time.UTC)
 
 	// Trouver le premier dimanche précédent la date de départ
@@ -260,7 +261,7 @@ func generateWeekMenu(date time.Time) string {
 	outputPath := fmt.Sprintf("%s/menu_%d_%d.html", pathmenu, year, week)
 
 	weekData := WeekData{
-		Title: fmt.Sprintf("Menu de la Semaine %d", week),
+		Title: fmt.Sprintf("Menu de la Semaine %d (%s)", week, date.Format("2006-01-02")),
 		Day:   make([]DayData, 7),
 	}
 
