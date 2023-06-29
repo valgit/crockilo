@@ -71,13 +71,34 @@ func main() {
 		myApp.Quit()
 	})
 
-	/*
-		openButton := widget.NewButton("Open", func() {
-			//TODO: get current week &/or date
-			url := "file:///Users/val/Documents/crockilo/crocmenu/menu_2023_18.html"
-			openURL(url)
-		})
-	*/
+	openButton := widget.NewButton("Open", func() {
+		//TODO: get current week &/or date
+		//url := "file:///Users/val/Documents/crockilo/crocmenu/menu_2023_18.html"
+		path, err := getHTMLpath()
+
+		pathrecipe := path + "/recipes"
+		outputPath := pathrecipe + "/recettes.html"
+		url := "file://" + outputPath
+
+		outputLabel.SetText("opening " + url)
+		err = openURL(url)
+		if err != nil {
+			outputLabel.SetText(err.Error())
+			return
+		}
+	})
+
+	indexButton := widget.NewButton("Index", func() {
+		outputLabel.SetText("reindex")
+		path, _ := getHTMLpath()
+
+		pathrecipe := path + "/recipes"
+		outputPath := pathrecipe + "/recettes.html"
+		IndexMenu(pathrecipe, outputPath)
+		outputLabel.SetText("reindex done")
+		return
+	})
+
 	quitButton := widget.NewButton("Quit", func() {
 		myApp.Quit()
 	})
@@ -87,7 +108,8 @@ func main() {
 		//layout.NewSpacer(),
 		container.NewHBox(
 			startButton,
-			//openButton,
+			openButton,
+			indexButton,
 			//layout.NewSpacer(),
 			quitButton,
 		),

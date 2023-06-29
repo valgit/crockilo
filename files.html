@@ -25,7 +25,7 @@
 			<h3>Liste des recettes:</h3>
 			<ul>
 				{{ range .FileNname }}
-				<li><a href="#" onclick="loadContent('{{ . }}')">{{ . }}</a></li>
+				<li><a href="{{ . }}">{{ . }}</a></li>
 				{{ end }}
 			</ul>
 		</div>

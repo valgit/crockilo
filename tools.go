@@ -98,3 +98,25 @@ func GetUnit(unit string) string {
 		return ""
 	}
 }
+
+// "file:///Users/val/Documents/crockilo/crocmenu/menu_2023_18.html"
+func getHTMLpath() (string, error) {
+	cwd, err := GetWorkingDir() // os.Getwd()
+	if err != nil {
+		fmt.Println("Error getting current working directory:", err)
+		return "", err
+	}
+
+	fmt.Println("Current working directory:", cwd)
+	defaultConf := cwd + "/config.yml"
+	cfg, err := LoadConfig(defaultConf)
+	if err != nil {
+		//log.Printf("error loading config file: %v", err)
+		return "", err
+	}
+
+	fmt.Printf("basedir is : %s\n", cfg.Appconf.Basedir)
+	//pathmenu := GetDocuments() + "/crocmenu"
+	pathmenu := cfg.Appconf.Basedir + "/crocmenu"
+	return pathmenu, nil
+}
