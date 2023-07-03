@@ -8,13 +8,16 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path/filepath"
+	"regexp"
 )
 
 type IndexData struct {
-	FileNname []string
+	FileName string
+	Title    string
 }
 
-func genIndexHTML(indexData IndexData, tmpl string, outputPath string) {
+func genIndexHTML(indexData []IndexData, tmpl string, outputPath string) {
 	// Files are provided as a slice of strings.
 
 	parsedTemplate, _ := template.ParseFiles(tmpl)
@@ -40,7 +43,8 @@ func genIndexHTML(indexData IndexData, tmpl string, outputPath string) {
 /*
  * create an HTML file with all the content
  */
-func IndexMenu(dirPath string, filePath string) {
+/*
+func IndexMenuOld(dirPath string, filePath string) {
 	// Read the content of the directory
 	files, err := ioutil.ReadDir(dirPath)
 	if err != nil {
@@ -49,13 +53,82 @@ func IndexMenu(dirPath string, filePath string) {
 	}
 
 	idxdata := IndexData{
-		FileNname: make([]string, 10),
+		FileName: make([]string, 10),
 	}
 
 	// Write the list of files to the output file
 	for _, fileInfo := range files {
-		idxdata.FileNname = append(idxdata.FileNname, fileInfo.Name())
+		idxdata.FileName = append(idxdata.FileName, fileInfo.Name())
 	}
 
 	genIndexHTML(idxdata, "files.html", filePath)
+}
+*/
+
+var titlePattern = regexp.MustCompile(`(?i)<title>(.*?)<\/title>`)
+
+/**
+ * extract title info
+ **/
+func extractTitleFromFile(filePath string) (string, error) {
+	fileContent, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		return "", err
+	}
+
+	matches := titlePattern.FindSubmatch(fileContent)
+	if len(matches) >= 2 {
+		return string(matches[1]), nil
+	}
+
+	return "", fmt.Errorf("no title found in file: %s", filePath)
+}
+
+func indexDirectory(directoryPath string) (map[string]string, error) {
+	index := make(map[string]string)
+
+	err := filepath.Walk(directoryPath, func(filePath string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if !info.IsDir() {
+			title, err := extractTitleFromFile(filePath)
+			if err != nil {
+				log.Printf("Error extracting title from file: %s\n%s", filePath, err.Error())
+				return nil // Skip the file and continue indexing
+			}
+
+			index[filePath] = title
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return index, nil
+}
+
+func IndexMenu(dirPath string, filePath string) {
+	//directoryPath := "/path/to/your/directory"
+	index, err := indexDirectory(dirPath)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Print the indexed title
+	var dataArray []IndexData
+
+	for fileName, title := range index {
+		data := IndexData{
+			FileName: fileName,
+			Title:    title,
+		}
+		dataArray = append(dataArray, data)
+	}
+
+	genIndexHTML(dataArray, "files.html", filePath)
 }

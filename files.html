@@ -17,6 +17,9 @@
 		.right {
 			flex: 3;
 		}
+		li a {
+			color: #fff; /* Set link color to white */
+		}
 	</style>
 </head>
 <body>
@@ -24,8 +27,8 @@
 		<div class="left">
 			<h3>Liste des recettes:</h3>
 			<ul>
-				{{ range .FileNname }}
-				<li><a href="{{ . }}">{{ . }}</a></li>
+				{{ range . }}
+				<li><a href="{{ .FileName }}">{{ .Title }}</a></li>		
 				{{ end }}
 			</ul>
 		</div>
