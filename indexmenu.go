@@ -112,7 +112,7 @@ func indexDirectory(directoryPath string) (map[string]string, error) {
 	return index, nil
 }
 
-func IndexMenu(dirPath string, filePath string) {
+func IndexMenu(dirPath string, filePath string, tmpl string) {
 	//directoryPath := "/path/to/your/directory"
 	index, err := indexDirectory(dirPath)
 	if err != nil {
@@ -130,5 +130,5 @@ func IndexMenu(dirPath string, filePath string) {
 		dataArray = append(dataArray, data)
 	}
 
-	genIndexHTML(dataArray, "files.html", filePath)
+	genIndexHTML(dataArray, tmpl, filePath)
 }
