@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"errors"
 	"fmt"
 	"html/template"
 	"io/ioutil"
@@ -112,8 +113,14 @@ func indexDirectory(directoryPath string) (map[string]string, error) {
 	return index, nil
 }
 
-func IndexMenu(dirPath string, filePath string, tmpl string) {
+func IndexMenu(dirPath string, filePath string, tmpl string) error {
 	//directoryPath := "/path/to/your/directory"
+	if !IsFileExist(tmpl) {
+		return errors.New("template file not found")
+	}
+	if !IsFileExist(dirPath) {
+		return errors.New("index directory not found")
+	}
 	index, err := indexDirectory(dirPath)
 	if err != nil {
 		log.Fatal(err)
@@ -131,4 +138,5 @@ func IndexMenu(dirPath string, filePath string, tmpl string) {
 	}
 
 	genIndexHTML(dataArray, tmpl, filePath)
+	return nil
 }

@@ -95,7 +95,10 @@ func main() {
 		pathrecipe := path + "/recipes"
 		outputPath := pathrecipe + "/recettes.html"
 		tmplPath := path + "/files.html"
-		IndexMenu(pathrecipe, outputPath, tmplPath)
+		err := IndexMenu(pathrecipe, outputPath, tmplPath)
+		if err != nil {
+			outputLabel.SetText(err.Error())
+		}
 		outputLabel.SetText("reindex done")
 		return
 	})
