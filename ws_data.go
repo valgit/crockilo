@@ -98,6 +98,13 @@ type HydraSearch struct {
 /*
  * meals recipes
  */
+type Categories struct {
+	ID    string `json:"@id"`
+	Type  string `json:"@type"`
+	ID0   int    `json:"id"`
+	Title string `json:"title"`
+}
+
 type MealRecipe struct {
 	Context           string              `json:"@context"`
 	ID                string              `json:"@id"`
@@ -115,7 +122,7 @@ type MealRecipe struct {
 	Steps             string              `json:"steps"`
 	Note              string              `json:"note"`
 	Picture           Picture             `json:"picture"`
-	Categories        []string            `json:"categories"`
+	Categories        []Categories        `json:"categories"`
 	Seasons           []string            `json:"seasons"`
 	RecipeIngredients []RecipeIngredients `json:"recipeIngredients"`
 	IsStabilization   bool                `json:"isStabilization"`

@@ -156,6 +156,7 @@ func GetRecipe(recipeid string, JWT string) MealRecipe {
 	*/
 	var recipe MealRecipe
 
+	//fmt.Printf("body:\n%sın", resp.Body)
 	//use alternativ unmarshal
 	err = json.NewDecoder(resp.Body).Decode(&recipe)
 	if err != nil {

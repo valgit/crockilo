@@ -18,7 +18,7 @@ darwin_arm64:
 	GOOS=darwin GOARCH=arm64 go build -o $(BUILD_DIR)/darwin_arm64/$(APP_NAME) -ldflags="-s -w -X main.version=$(VERSION)" $(SRC_FILES)
 
 packages: 
-	~/go/bin/fyne package -os darwin -arch=amd64,386 -icon croc.png
+	~/go/bin/fyne package -os darwin  -icon croc.png
 
 clean:
 	rm -rf $(BUILD_DIR)/* $(DIST_DIR)/*

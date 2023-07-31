@@ -69,6 +69,25 @@ func main() {
 			return
 		}
 		myApp.Quit()
+
+		/* for a range ?
+		// TODO: need to externalise cfg
+		// Define the start date (08/01/2022)
+		startDate := time.Date(2022, time.August, 1, 0, 0, 0, 0, time.UTC)
+
+		// Get the current date
+		currentDate := time.Now()
+
+		// Iterate from the start date until the current date
+		for date := startDate; date.Before(currentDate); date = date.AddDate(0, 0, 1) {
+			// Check if the day is a Monday (Monday is the 1st day of the week in Go)
+			if date.Weekday() == time.Monday {
+				// Call the function to generate the menu for the week
+				outputLabel.SetText(fmt.Sprintf("Starting process for date: %s", date.Format("01/02/2006")))
+				generateWeekMenu(date)
+			}
+		}*/
+
 	})
 
 	openButton := widget.NewButton("Open", func() {
