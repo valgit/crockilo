@@ -172,11 +172,13 @@ func usage() {
 	flag.PrintDefaults()
 }
 
-func generateWeekMenu(date time.Time) string {
+var cfg *Config
+
+func getConfig() {
 	cwd, err := GetWorkingDir() // os.Getwd()
 	if err != nil {
 		fmt.Println("Error getting current working directory:", err)
-		return ""
+		os.Exit(1)
 	}
 
 	fmt.Println("Current working directory:", cwd)
@@ -192,10 +194,10 @@ func generateWeekMenu(date time.Time) string {
 	flag.Usage = usage
 	flag.Parse()
 
-	cfg, err := LoadConfig(*configFile)
+	cfg, err = LoadConfig(*configFile)
 	if err != nil {
 		log.Printf("error loading config file: %v", err)
-		return ""
+		os.Exit(1)
 	}
 
 	// Override config values with command-line flags
@@ -215,19 +217,27 @@ func generateWeekMenu(date time.Time) string {
 		os.Exit(1)
 	}
 
+}
+
+func getToken() (Jwtlogin, error) {
 	/* get a one time token*/
 	token, err := CheckAuth(cfg.Appconf.User, cfg.Appconf.Password)
 	if err != nil {
 		log.Fatal("login error")
-		return ""
+		return Jwtlogin{}, err
 	}
+	return token, nil
+}
+
+func generateWeekMenu(date time.Time, token Jwtlogin) string {
+	//getConfig()
+
 	fmt.Printf("JWT: %s\n", token.Token)
-	/**/
 
 	fmt.Printf("basedir is : %s\n", cfg.Appconf.Basedir)
 	//pathmenu := GetDocuments() + "/crocmenu"
 	pathmenu := cfg.Appconf.Basedir + "/crocmenu"
-	err = Checkdir(pathmenu)
+	err := Checkdir(pathmenu)
 	if err != nil {
 		log.Fatal("can't create menu dir")
 		return ""
