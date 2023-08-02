@@ -48,6 +48,8 @@ func main() {
 	dateEntry.SetPlaceHolder("Enter a date (dd/mm/yyyy)")
 	dateEntry.SetText(today)
 
+	checkbox := widget.NewCheck("start date", nil)
+
 	outputLabel := widget.NewLabel("Output will appear here")
 
 	startButton := widget.NewButton("Start", func() {
@@ -77,24 +79,26 @@ func main() {
 		}
 
 		// for a range ?
+		if checkbox.Checked {
+			// TODO: need to externalise cfg
+			// Define the start date (08/01/2022)
+			//startDate := time.Date(2022, time.August, 1, 0, 0, 0, 0, time.UTC)
+			startDate := date
+			outputLabel.SetText("loop on week")
+			// Get the current date
+			currentDate := time.Now()
 
-		// TODO: need to externalise cfg
-		// Define the start date (08/01/2022)
-		startDate := time.Date(2022, time.August, 1, 0, 0, 0, 0, time.UTC)
-		outputLabel.SetText("loop on week")
-		// Get the current date
-		currentDate := time.Now()
-
-		// Iterate from the start date until the current date
-		for date := startDate; date.Before(currentDate); date = date.AddDate(0, 0, 1) {
-			// Check if the day is a Monday (Monday is the 1st day of the week in Go)
-			if date.Weekday() == time.Monday {
-				// Call the function to generate the menu for the week
-				outputLabel.SetText(fmt.Sprintf("Starting process for date: %s", date.Format("02/01/2006")))
-				generateWeekMenu(date, token)
+			// Iterate from the start date until the current date
+			for date := startDate; date.Before(currentDate); date = date.AddDate(0, 0, 1) {
+				// Check if the day is a Monday (Monday is the 1st day of the week in Go)
+				if date.Weekday() == time.Monday {
+					// Call the function to generate the menu for the week
+					outputLabel.SetText(fmt.Sprintf("Starting process for date: %s", date.Format("02/01/2006")))
+					generateWeekMenu(date, token)
+				}
 			}
+			// end loop
 		}
-		// end loop
 		myApp.Quit()
 	})
 
@@ -135,7 +139,9 @@ func main() {
 	})
 
 	myWin.SetContent(container.NewVBox(
+		//container.NewHBox(dateEntry, checkbox),
 		dateEntry,
+		checkbox,
 		//layout.NewSpacer(),
 		container.NewHBox(
 			startButton,
