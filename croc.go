@@ -306,8 +306,8 @@ func generateWeekMenu(date time.Time, token Jwtlogin) string {
 
 		//weekday := fmt.Sprintf("%s", humanReadable.Weekday())
 		weekday := humanReadable.Weekday().String()
-		weekData.Day[i].Meal = r.Replace(weekday) // fmt.Sprintf("%s", weekday)
-		weekData.Day[i].Menu = make([]MenuData, 4)
+		weekData.Day[i].Meal = r.Replace(weekday)   // fmt.Sprintf("%s", weekday)
+		weekData.Day[i].Menu = make([]MenuData, 10) // was 4 2018 ?
 
 		menus := GetMenuForDay(day, token.Token)
 
@@ -317,6 +317,9 @@ func generateWeekMenu(date time.Time, token Jwtlogin) string {
 			fmt.Printf("type: %s \n", menu.Type)
 			for m, meals := range menu.MenuMeals {
 				//fmt.Fprintf(f, "<h1>%s</h1>\n", meals.Meal.Title)
+				if m > 4 {
+					fmt.Printf("too much meal at %s\n", humanReadable.Format("2006-01-02"))
+				}
 				pieces := strings.Split(meals.Meal.Title, " - ")
 				if len(pieces) > 2 {
 					weekData.Day[i].Menu[m].Name = fmt.Sprintf("%s (%s)", pieces[1], pieces[2])
@@ -326,12 +329,14 @@ func generateWeekMenu(date time.Time, token Jwtlogin) string {
 					fmt.Printf("menu: %s \n", pieces[1])
 				}
 				//TODO: better
-				weekData.Day[i].Menu[m].Plat = make([]Recette, 5)
+				weekData.Day[i].Menu[m].Plat = make([]Recette, 10) // 5 in 2019
 
 				for p, recipes := range meals.Meal.MealRecipes {
 					//fmt.Fprintf(f, "<h2>%s</h2>\n", recipes.Recipe.Title)
 					fmt.Printf("%s\n", recipes.Recipe.Title)
-
+					if p > 5 {
+						fmt.Printf("too much recipe at %s\n", humanReadable.Format("2006-01-02"))
+					}
 					weekData.Day[i].Menu[m].Plat[p].Name = recipes.Recipe.Title
 
 					/*
